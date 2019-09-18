@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce-React-ASPX-Restaurant", "ECommerce-React-ASPX-Restaurant\ECommerce-React-ASPX-Restaurant.csproj", "{8D77D328-0795-4A2A-B7A7-DD794FC12D38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce-React-ASPX-Restaurant.Tests", "ECommerce-React-ASPX-Restaurant.Tests\ECommerce-React-ASPX-Restaurant.Tests.csproj", "{84B00DC4-9296-416B-8F29-29FC4A81A959}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D77D328-0795-4A2A-B7A7-DD794FC12D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D77D328-0795-4A2A-B7A7-DD794FC12D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D77D328-0795-4A2A-B7A7-DD794FC12D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D77D328-0795-4A2A-B7A7-DD794FC12D38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84B00DC4-9296-416B-8F29-29FC4A81A959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84B00DC4-9296-416B-8F29-29FC4A81A959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84B00DC4-9296-416B-8F29-29FC4A81A959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84B00DC4-9296-416B-8F29-29FC4A81A959}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92237C52-B33D-4B63-99C0-DD5E27D15165}
+	EndGlobalSection
+EndGlobal
