@@ -61,34 +61,46 @@ namespace ECommerce_React_ASPX_Restaurant.Controllers
             return View();
         }
 
-        //
+        // changed in LiL online-class 2_4 on 9/20/2019
+        // 
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(Customer user)
         {
-            if (!ModelState.IsValid)
+            using (var db = new AppDbContext())
             {
-                return View(model);
+                Customer LogginInCustomer = db.Customers.
+                    Where(u => (u.Email == user.Email && u.Password == user.Password)).
+                    FirstOrDefault();
+
+                // if any user found with matching email and password, login OK
+                if (LogginInCustomer != null)
+                {
+                    // Update Session vars
+                    Session["Email"] = LogginInCustomer.Email;
+                    Session["UserId"] = LogginInCustomer.Id;
+                    ViewBag.Email = LogginInCustomer.Email;
+                    ViewBag.UserId = LogginInCustomer.Id;
+
+                    return RedirectToAction("Index", "Home");
+
+                }
+                else
+                {
+                    // login failed
+                    ViewBag.ErrorMsg = "Login Failed!";
+                    Session["Email"] = null;
+                    Session["UserId"] = null;
+                    ViewBag.Email = string.Empty;
+                    ViewBag.UserId = -1;
+
+                    return View();
+
+                }
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
         }
 
         //
@@ -142,34 +154,66 @@ namespace ECommerce_React_ASPX_Restaurant.Controllers
             return View();
         }
 
-        //
+        // changed in LiL online-class 2_4 on 9/20/2019
+        //// POST: /Account/Register
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Register(RegisterViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        //        var result = await UserManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+        //            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+        //            // Send an email with this link
+        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        AddErrors(result);
+        //    }
+
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
+
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(Customer user)
         {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+            ViewBag.ErrMsg = string.Empty;
+            ViewBag.SuccessMsg = string.Empty;
 
-                    return RedirectToAction("Index", "Home");
+            // initialize db; see if customer exists (email match in DB);
+            using (var db = new AppDbContext())
+            {
+                Customer c = db.Customers.Where(u => u.Email == user.Email).
+                    FirstOrDefault();
+                if (c != null)
+                {
+                    ViewBag.ErrMsg = "User Exists!";
                 }
-                AddErrors(result);
+                else
+                {
+                    db.Customers.Add(user);
+                    db.SaveChanges();
+                    ViewBag.SuccessMsg = "User Added!";
+                }
+
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+                return View();
+           // return RedirectToAction("Index", "Home");
+
         }
 
         //
@@ -385,13 +429,32 @@ namespace ECommerce_React_ASPX_Restaurant.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //// changed in LiL online-class 2_4 on 9/20/2019
+        //// 
+        //// POST: /Account/LogOff
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult LogOff()
+        //{
+        //    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        //    return RedirectToAction("Index", "Home");
+        //}
+
+
+        // changed in LiL online-class 2_4 on 9/20/2019
+        // 
+        // GET: /Account/LogOff
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            Session["Email"] = null;
+            Session["UserId"] = null;
+            ViewBag.Email = string.Empty;
+            ViewBag.UserId = -1;
+
+           // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 

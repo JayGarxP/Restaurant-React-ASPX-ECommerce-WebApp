@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerce_React_ASPX_Restaurant.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,10 @@ namespace ECommerce_React_ASPX_Restaurant.Controllers
     {
         public ActionResult Index()
         {
+            // run these once to setup the default connection on a SQLEXPRESS database; will retool this process later.
+            //AppDbContext c = new AppDbContext();
+            //c.Database.CreateIfNotExists();
+
             return View();
         }
 
