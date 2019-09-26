@@ -43,9 +43,66 @@ namespace ECommerce_React_ASPX_Restaurant.Controllers
 
 
         [HttpPost]
-        public ActionResult PlaceOrder()
+        public ActionResult PlaceOrder(IList<FoodItem> items, int userid)
         {
-            return null;
+            bool dbSuccess = false;
+            string exceptionMsg = "";
+            try
+            {
+
+            using (var db = new AppDbContext())
+            {
+                Order o = new Order();
+                o.CustomerId = userid;
+                o.OrderDate = DateTime.Now;
+
+                db.Orders.Add(o);
+                db.SaveChanges();
+
+                int orderId = o.Id;
+                // $ spent on entire order, price of summed orderDetails
+                decimal grandTotal = 0;
+                // fill order details objects
+                foreach ( var f in items)
+                {
+                    // init OrderDetail object
+                    OrderDetail orderDetail = new OrderDetail
+                    {
+                        OrderId = orderId,
+                        FoodItemId = f.Id,
+                        Quantity = f.Quantity,
+                        TotalPrice = f.Price * f.Quantity
+                    };
+
+                db.OrderDetails.Add(orderDetail);
+                    grandTotal += orderDetail.TotalPrice;
+                }
+
+                o.TotalPaid = grandTotal;
+                o.Status = 1;
+                // Probably should have same orderdate for everything
+                // TODO: to make future purchasing habits queries more useful
+                o.OrderDate = DateTime.Now;
+                db.SaveChanges();
+                    dbSuccess = true;
+            }
+            }
+            catch (Exception ex)
+            {
+                dbSuccess = false;
+                exceptionMsg = ex.Message;
+                
+            }
+
+
+            if (dbSuccess)
+            {
+                return Json("dbSuccess: true", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("dbSuccess: false   " + exceptionMsg, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
