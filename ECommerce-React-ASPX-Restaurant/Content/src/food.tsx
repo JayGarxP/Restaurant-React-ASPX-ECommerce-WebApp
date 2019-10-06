@@ -12,7 +12,9 @@
  * dont forget to exclude React files from project, like this food.tsx (right click in solution explorer->exclude)
  * everytime you make change to pure react or tsx file
  *              you need to transpile AGAIN with 'webpack' on CMD
- *             to recreate/update bundle.js file           
+ *             to recreate/update bundle.js file
+ *   to transpile again from cmd in same dir as this project: npm install --save typescript
+ *   then run 'webpack'
  * */
 
 import * as React from "react";
