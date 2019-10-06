@@ -15,15 +15,20 @@
  *             to recreate/update bundle.js file
  *   to transpile again from cmd in same dir as this project: npm install --save typescript
  *   then run 'webpack'
+ *   Or run the transpile.bat batch file distributed with this code.
  * */
 
 import * as React from "react";
 
 import * as ReactDOM from "react-dom";
 
+import {MenuBox} from "./MenuBox";
+
+
 ReactDOM.render(
     <div>
-        <h2>Test</h2>
+        <h2>MenuBox</h2>
+        <MenuBox />
     </div>,
     document.getElementById("foodorder")
 );
