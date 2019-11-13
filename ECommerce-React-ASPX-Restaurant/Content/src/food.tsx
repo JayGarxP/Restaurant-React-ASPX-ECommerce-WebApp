@@ -16,6 +16,10 @@
  *   to transpile again from cmd in same dir as this project: npm install --save typescript
  *   then run 'webpack'
  *   Or run the transpile.bat batch file distributed with this code.
+ *   
+ *   BTW Clean And Rebuild will not save you, You must delete the .suo file if any .dll not found messages appear after running webpack
+ *   https://stackoverflow.com/questions/1421862/metadata-file-dll-could-not-be-found
+ *   Big $$$ for whoever makes using React with MVC .NET in VS easier, but the new Blasor may make that task obsolete...
  * */
 
 import * as React from "react";
